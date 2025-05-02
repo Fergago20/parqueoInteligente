@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Estacionamiento UAM</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #012d35;
+    }
+
+    h1 {
+      margin-top: 30px;
+      color: #09DEC9;
+      font-size: 50px;
+    }
+
+    .parking-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 30px;
+      margin-top: 80px;
+    }
+
+    .slot {
+      width: 220px;
+      height: 480px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .car {
+      width: 100%;
+      height: 100%;
+      background-color: green;
+      border-radius: 25px;
+      position: relative;
+      transition: background-color 0.3s;
+    }
+
+    .car.rojo {
+      background-color: red;
+    }
+
+    .car::before,
+    .car::after {
+      content: '';
+      position: absolute;
+      background-color: white;
+      border-radius: 5px;
+    }
+
+    .car::before {
+      width: 100px;
+      height: 60px;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .car::after {
+      width: 100px;
+      height: 50px;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .label {
+      position: absolute;
+      bottom: -40px;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 32px;
+      color: white;
+    }
+
+    .divider {
+      width: 15px;
+      height: 480px;
+      border-left: 12px dashed gold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bienvenido al Estacionamiento UAM</h1>
+
+  <div class="parking-wrapper">
+    <div class="slot" onclick="cambiarEstado('A1')">
+      <div class="car" id="A1"></div>
+      <div class="label">A1</div>
+    </div>
+    <div class="divider"></div>
+    <div class="slot" onclick="cambiarEstado('A2')">
+      <div class="car" id="A2"></div>
+      <div class="label">A2</div>
+    </div>
+    <div class="divider"></div>
+    <div class="slot" onclick="cambiarEstado('A3')">
+      <div class="car" id="A3"></div>
+      <div class="label">A3</div>
+    </div>
+    <div class="divider"></div>
+    <div class="slot" onclick="cambiarEstado('A4')">
+      <div class="car" id="A4"></div>
+      <div class="label">A4</div>
+    </div>
+  </div>
+
+  <script>
+    // Establecer la conexión WebSocket con el servidor
+    const socket = io.connect('http://localhost:5000');
+
+    // Manejar la recepción del estado de estacionamiento
+    socket.on('estado_estacionamiento', function(parkingState) {
+      for (const id in parkingState) {
+        const car = document.getElementById(id);
+        if (parkingState[id] === 'libre') {
+          car.classList.remove('rojo');
+        } else {
+          car.classList.add('rojo');
+        }
+      }
+    });
+
+    // Función que cambia el estado de un espacio de estacionamiento
+    function cambiarEstado(id) {
+      const car = document.getElementById(id);
+      const newState = car.classList.contains('rojo') ? 'ocupado' : 'libre';
+      car.classList.toggle('rojo');
+
+      // Enviar el estado actualizado al servidor
+      const updatedState = {
+        A1: document.getElementById('A1').classList.contains('rojo') ? 'ocupado' : 'libre',
+        A2: document.getElementById('A2').classList.contains('rojo') ? 'ocupado' : 'libre',
+        A3: document.getElementById('A3').classList.contains('rojo') ? 'ocupado' : 'libre',
+        A4: document.getElementById('A4').classList.contains('rojo') ? 'ocupado' : 'libre',
+      };
+
+      // Enviar el nuevo estado al servidor
+      socket.emit('cambiar_estado', updatedState);
+    }
+  </script>
+</body>
+</html>

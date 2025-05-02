@@ -1,0 +1,65 @@
+<!-- archivo: templates/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estacionamiento UAM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        .grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .slot {
+            width: 120px;
+            height: 120px;
+            border: 3px solid #333;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        .verde {
+            background-color: green;
+        }
+        .rojo {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenido al estacionamiento UAM</h1>
+    <div class="grid">
+        <div class="slot" id="A1">A1</div>
+        <div class="slot" id="A2">A2</div>
+        <div class="slot" id="A3">A3</div>
+        <div class="slot" id="A4">A4</div>
+    </div>
+
+    <script>
+        async function actualizar() {
+            const res = await fetch('/estado');
+            const data = await res.json();
+
+            for (let slot in data) {
+                const el = document.getElementById(slot);
+                el.className = 'slot ' + data[slot];
+            }
+        }
+
+        setInterval(actualizar, 1000);  // Actualiza cada segundo
+        actualizar();  // Carga inicial
+    </script>
+</body>
+</html>

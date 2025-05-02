@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Se establece la codificación de caracteres a UTF-8 para asegurar la correcta visualización de caracteres especiales en español -->
+  <meta charset="UTF-8" />
+  <!-- El título de la página se muestra en la barra de título del navegador -->
+  <title>Estacionamiento UAM</title>
+  <style>
+    /* Se define el estilo base para todo el cuerpo de la página */
+    body {
+      font-family: Arial, sans-serif; /* Establece la fuente de texto */
+      text-align: center; /* Centra todo el texto en la página */
+      background-color: #012d35; /* Fija un color de fondo oscuro para la página */
+    }
+
+    /* Estilo para el encabezado principal de la página */
+    h1 {
+      margin-top: 30px; /* Agrega espacio arriba del título */
+      color: #09DEC9; /* Define un color verde claro para el título */
+      font-size: 50px; /* Aumenta el tamaño del texto para hacerlo prominente */
+    }
+
+    /* Se agrupan los elementos del estacionamiento dentro de un contenedor flexible */
+    .parking-wrapper {
+      position: relative; /* Establece un contexto relativo para los elementos dentro */
+      display: flex; /* Usa Flexbox para disponer los elementos en línea */
+      justify-content: center; /* Centra los elementos de izquierda a derecha */
+      align-items: flex-start; /* Alinea los elementos en la parte superior */
+      gap: 30px; /* Añade un espacio entre los elementos */
+      margin-top: 80px; /* Desplaza el contenedor hacia abajo */
+    }
+
+    /* Estilo para cada espacio de estacionamiento */
+    .slot {
+      width: 220px; /* Ancho de cada espacio de estacionamiento */
+      height: 480px; /* Altura del espacio */
+      position: relative; /* Posiciona el espacio relativamente para los elementos internos */
+      cursor: pointer; /* Cambia el cursor al pasar sobre el espacio */
+    }
+
+    /* Estilo para los vehículos representados en cada espacio */
+    .car {
+      width: 100%; /* El vehículo ocupa todo el ancho del espacio */
+      height: 100%; /* El vehículo ocupa toda la altura del espacio */
+      background-color: green; /* El color inicial del vehículo es verde (indica espacio ocupado) */
+      border-radius: 25px; /* Bordes redondeados para el vehículo */
+      position: relative; /* Posiciona el vehículo relativamente a su contenedor */
+      transition: background-color 0.3s; /* Anima el cambio de color del vehículo */
+    }
+
+    /* Estilo para los vehículos que están en estado "libre" (rojos) */
+    .car.rojo {
+      background-color: red; /* Cambia el color del vehículo a rojo cuando está libre */
+    }
+
+    /* Estilo para las decoraciones en el vehículo */
+    .car::before,
+    .car::after {
+      content: ''; /* Crea pseudo-elementos antes y después del vehículo */
+      position: absolute; /* Posiciona estos elementos absolutamente dentro del vehículo */
+      background-color: white; /* Los pseudo-elementos son blancos */
+      border-radius: 5px; /* Bordes redondeados para los pseudo-elementos */
+    }
+
+    /* Posiciona el primer pseudo-elemento (el techo del vehículo) */
+    .car::before {
+      width: 100px; /* Ancho del techo del vehículo */
+      height: 60px; /* Altura del techo */
+      top: 50px; /* Desplaza el techo hacia abajo */
+      left: 50%; /* Centra el techo horizontalmente */
+      transform: translateX(-50%); /* Ajusta el techo para que esté perfectamente centrado */
+    }
+
+    /* Posiciona el segundo pseudo-elemento (el bumper o parte inferior del vehículo) */
+    .car::after {
+      width: 100px; /* Ancho del bumper */
+      height: 50px; /* Altura del bumper */
+      bottom: 30px; /* Desplaza el bumper hacia arriba */
+      left: 50%; /* Centra el bumper horizontalmente */
+      transform: translateX(-50%); /* Ajusta el bumper para que esté perfectamente centrado */
+    }
+
+    /* Estilo para las etiquetas de cada espacio de estacionamiento */
+    .label {
+      position: absolute; /* Posiciona la etiqueta de manera absoluta dentro del espacio */
+      bottom: -40px; /* Desplaza la etiqueta hacia abajo */
+      width: 100%; /* La etiqueta ocupa todo el ancho del espacio */
+      text-align: center; /* Centra el texto dentro de la etiqueta */
+      font-weight: bold; /* Define el texto en negrita */
+      font-size: 32px; /* Establece un tamaño de fuente grande para la etiqueta */
+      color: white; /* Establece el color del texto como blanco */
+    }
+
+    /* Estilo para las divisiones entre los espacios de estacionamiento */
+    .divider {
+      width: 15px; /* Ancho de la división */
+      height: 480px; /* Altura de la división */
+      border-left: 12px dashed gold; /* Estilo de la división: línea discontinua dorada */
+    }
+  </style>
+</head>
+<body>
+  <!-- Encabezado principal de la página -->
+  <h1>Bienvenido al Estacionamiento UAM</h1>
+
+  <!-- Contenedor de los espacios de estacionamiento -->
+  <div class="parking-wrapper">
+    <!-- Espacio A1 del estacionamiento -->
+    <div class="slot" onclick="cambiarEstado('A1')">
+      <!-- Vehículo en el espacio A1 -->
+      <div class="car" id="A1"></div>
+      <!-- Etiqueta del espacio A1 -->
+      <div class="label">A1</div>
+    </div>
+
+    <!-- División entre los espacios A1 y A2 -->
+    <div class="divider"></div>
+
+    <!-- Espacio A2 del estacionamiento -->
+    <div class="slot" onclick="cambiarEstado('A2')">
+      <div class="car" id="A2"></div>
+      <div class="label">A2</div>
+    </div>
+
+    <!-- División entre los espacios A2 y A3 -->
+    <div class="divider"></div>
+
+    <!-- Espacio A3 del estacionamiento -->
+    <div class="slot" onclick="cambiarEstado('A3')">
+      <div class="car" id="A3"></div>
+      <div class="label">A3</div>
+    </div>
+
+    <!-- División entre los espacios A3 y A4 -->
+    <div class="divider"></div>
+
+    <!-- Espacio A4 del estacionamiento -->
+    <div class="slot" onclick="cambiarEstado('A4')">
+      <div class="car" id="A4"></div>
+      <div class="label">A4</div>
+    </div>
+  </div>
+
+  <!-- Script que maneja el cambio de estado de los vehículos -->
+  <script>
+    /* Función que cambia el estado del vehículo (de ocupado a libre y viceversa) */
+    function cambiarEstado(id) {
+      const car = document.getElementById(id); /* Obtiene el elemento del vehículo por su ID */
+      car.classList.toggle('rojo'); /* Cambia el color del vehículo entre verde y rojo */
+    }
+  </script>
+</body>
+</html>
