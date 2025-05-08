@@ -6,7 +6,7 @@ from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
 
-# Estado inicial
+
 espacios = {
     "A1": "verde",
     "A2": "verde",
@@ -22,7 +22,7 @@ def index():
 def estado():
     return jsonify(espacios)
 
-# ---------------- SERIAL ----------------
+
 
 arduino = None
 
@@ -56,7 +56,7 @@ def actualizar_espacios_desde_serial(mensaje):
     for slot in espacios.keys():
         espacios[slot] = "rojo" if slot in ocupados else "verde"
 
-# ---------------- MAIN ----------------
+
 
 if __name__ == "__main__":
     hilo_serial = threading.Thread(target=leer_arduino)

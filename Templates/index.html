@@ -115,7 +115,7 @@
       fetch("/estado")
         .then(response => response.json())
         .then(data => {
-          console.log(data); // Para depuración en consola
+          console.log(data); 
           for (let espacio in data) {
             const elemento = document.getElementById(espacio);
             if (elemento) {
